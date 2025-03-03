@@ -15,6 +15,7 @@ class LoginPage(BasePage,):
         self.password_textbox = page.locator('//input[@name="password"]')
         self.btn_login = page.locator('//input[@id="login-button"]')
         self.products_header = page.locator('//div[@class="product_label"]')
+        self.error_header = page.locator('//h3[@data-test="error"]')
 
     async def check_url(self, text):
         return await super().check_url(text)
@@ -33,3 +34,6 @@ class LoginPage(BasePage,):
 
     async def check_text(self, text):
         return await super().check_text(self.products_header, text)
+
+    async def check_error_text(self, text):
+        return await super().check_text(self.error_header, text)
