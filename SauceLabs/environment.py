@@ -30,14 +30,16 @@ async def before_scenario(context, scenario):
     # base_page.load_env()
 
 
-# Cierra el navegador despues de cada scenario
 @async_run_until_complete
 async def after_scenario(context, scenario):
-    # Cierra la pagina
-    await context.page.close()
+    try:
+        # Cierra sesion después de cada escenario
+        cierra_sesion = BasePage(context.page)
+        await cierra_sesion.logout()
 
-
-@async_run_until_complete
-async def after_scenario(context, scenario):
-    cierra_sesion = BasePage(context.page)
-    await cierra_sesion.logout()
+    except AssertionError as e:
+        # PAra los casos que no iniciarion sesión
+        print("***No se puede cerrar sesión, ya que no se ha iniciado sesión")
+    finally:
+        # Cierra el navegador después, aún si fallo el logout
+        await context.page.close()
